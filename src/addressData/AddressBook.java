@@ -55,14 +55,16 @@ public class AddressBook {
      * @param nombre Nombre de la entrada de direcciones a buscar.
      * @return La entrada de direcciones encontrada, o null si no se encontró.
      */
-    public AddressEntry buscarEntry(String nombre) {
+    public List<AddressEntry> buscarEntry(String apellido) {
+        List<AddressEntry> coincidencias = new ArrayList<>();
         for (AddressEntry entry : entries) {
-            if (entry.getNombre().equalsIgnoreCase(nombre)) {
-                return entry;
+            if (entry.getApellido().toLowerCase().startsWith(apellido.toLowerCase())) {
+                coincidencias.add(entry);
             }
         }
-        return null;
+        return coincidencias;
     }
+
 
     /**
      * Busca una entrada de direcciones por apellido.

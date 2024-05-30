@@ -44,8 +44,12 @@ public class Menu {
                 case "a" -> {
                     System.out.print("Ingresa el nombre del archivo: ");
                     String archivo = scanner.nextLine();
-                    addressBook.cargarDesdeArchivo(archivo); // Carga las entradas desde el archivo especificado
-                    System.out.println("¡Las entradas se cargaron correctamente!");
+                    try {
+                        addressBook.cargarDesdeArchivo(archivo); // Intenta cargar las entradas desde el archivo especificado
+                        System.out.println("¡Las entradas se cargaron correctamente!");
+                    } catch (IOException e) {
+                        System.out.println("Error al cargar las entradas desde el archivo: " + e.getMessage());
+                    }
                 }
                 case "b" -> {
                     System.out.println("---- Agregar una nueva entrada ----");
@@ -78,7 +82,7 @@ public class Menu {
                     System.out.print("Ingresa el apellido de la entrada a eliminar: ");
                     String apellidoEliminar = scanner.nextLine();
                     // Busca la entrada con el apellido especificado y la elimina si existe
-                    AddressEntry entryEliminar = addressBook.buscarEntry(apellidoEliminar);
+                    AddressEntry entryEliminar = (AddressEntry) addressBook.buscarEntry(apellidoEliminar);
                     if (entryEliminar != null) {
                         addressBook.eliminarEntry(entryEliminar);
                         System.out.println("¡La entrada se eliminó correctamente!");

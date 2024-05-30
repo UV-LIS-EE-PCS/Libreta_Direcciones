@@ -121,6 +121,7 @@ public class AddressBook {
 
         for (AddressEntry entry : copiaEntries) {
             System.out.println(entry);
+            System.out.println();
         }
     }
 }

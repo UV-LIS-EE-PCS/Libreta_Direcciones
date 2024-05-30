@@ -4,6 +4,7 @@ package address;
 import addressData.AddressBook;
 import addressData.AddressEntry;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -81,11 +82,23 @@ public class Menu {
                     System.out.println("---- Eliminar una entrada ----");
                     System.out.print("Ingresa el apellido de la entrada a eliminar: ");
                     String apellidoEliminar = scanner.nextLine();
-                    // Busca la entrada con el apellido especificado y la elimina si existe
-                    AddressEntry entryEliminar = (AddressEntry) addressBook.buscarEntry(apellidoEliminar);
-                    if (entryEliminar != null) {
-                        addressBook.eliminarEntry(entryEliminar);
-                        System.out.println("¡La entrada se eliminó correctamente!");
+                    // Busca las entradas con el apellido especificado
+                    List<AddressEntry> entradasAEliminar = addressBook.buscarEntry(apellidoEliminar);
+                    if (!entradasAEliminar.isEmpty()) {
+                        // Muestra las entradas encontradas y solicita al usuario seleccionar una para eliminar
+                        System.out.println("Se encontraron las siguientes entradas:");
+                        for (int i = 0; i < entradasAEliminar.size(); i++) {
+                            System.out.println((i + 1) + ". " + entradasAEliminar.get(i));
+                        }
+                        System.out.print("Ingresa el número de la entrada a eliminar: ");
+                        int entradaEliminarIndex = Integer.parseInt(scanner.nextLine()) - 1;
+                        if (entradaEliminarIndex >= 0 && entradaEliminarIndex < entradasAEliminar.size()) {
+                            AddressEntry entryEliminar = entradasAEliminar.get(entradaEliminarIndex);
+                            addressBook.eliminarEntry(entryEliminar);
+                            System.out.println("¡La entrada se eliminó correctamente!");
+                        } else {
+                            System.out.println("Número de entrada inválido.");
+                        }
                     } else {
                         System.out.println("No se encontró ninguna entrada con ese apellido.");
                     }
@@ -121,6 +134,7 @@ public class Menu {
         for (AddressEntry entry : addressBook.getEntries()) {
             if (entry.getApellido().toLowerCase().startsWith(inicioApellido.toLowerCase())) {
                 System.out.println(entry);
+                System.out.println();
                 encontradas = true;
             }
         }

@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -17,25 +15,18 @@ import java.util.List;
  */
 public class AddressBook {
 
-    /**
-     * Lista de entradas de direcciones.
-     * Se utiliza para almacenar las entradas de direcciones.
-     * Se utiliza un ArrayList porque es una estructura de datos dinámica.
-     */
     private final List<AddressEntry> entries;
 
     /**
      * Constructor de la clase AddressBook.
      * Inicializa la lista de entradas de direcciones.
      */
-
     public AddressBook() {
         entries = new ArrayList<>();
     }
 
     /**
-     * Carga las entradas de direcciones desde un archivo.
-     * @param archivo Nombre del archivo que contiene las entradas de direcciones.
+     * Agrega una entrada de direcciones a la libreta.
      * @param entry Entrada de direcciones a agregar.
      */
     public void agregarEntry(AddressEntry entry) {
@@ -43,7 +34,7 @@ public class AddressBook {
     }
 
     /**
-     * Elimina una entrada de direcciones.
+     * Elimina una entrada de direcciones de la libreta.
      * @param entry Entrada de direcciones a eliminar.
      */
     public void eliminarEntry(AddressEntry entry) {
@@ -51,9 +42,9 @@ public class AddressBook {
     }
 
     /**
-     * Busca una entrada de direcciones por nombre.
-     * @param nombre Nombre de la entrada de direcciones a buscar.
-     * @return La entrada de direcciones encontrada, o null si no se encontró.
+     * Busca entradas de direcciones por apellido.
+     * @param apellido Apellido de las entradas de direcciones a buscar.
+     * @return Lista de entradas de direcciones que coinciden con el apellido.
      */
     public List<AddressEntry> buscarEntry(String apellido) {
         List<AddressEntry> coincidencias = new ArrayList<>();
@@ -65,39 +56,40 @@ public class AddressBook {
         return coincidencias;
     }
 
-
     /**
-     * Busca una entrada de direcciones por apellido.
-     * @param apellido Apellido de la entrada de direcciones a buscar.
-     * @return La entrada de direcciones encontrada, o null si no se encontró
+     * Carga las entradas de direcciones desde un archivo.
+     * @param archivo Nombre del archivo que contiene las entradas de direcciones.
+     * @throws IOException Si ocurre un error al leer el archivo.
      */
     public void cargarDesdeArchivo(String archivo) throws IOException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resourceUrl = classLoader.getResource(archivo);
+        File file = new File(archivo);
 
-        if (resourceUrl == null) {
+        if (!file.exists()) {
             System.out.println("No se encontró el archivo: " + archivo);
             return;
         }
-        File file = new File(resourceUrl.getFile());
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String linea;
-        while ((linea = br.readLine()) != null) {
-            // Formato esperado: nombre,apellido,calle,ciudad,estado,codigoPostal,correoElectronico,telefono
-            String[] campos = linea.split(",");
-            if (campos.length == 8) {
-                String nombre = campos[0].trim();
-                String apellido = campos[1].trim();
-                String calle = campos[2].trim();
-                String ciudad = campos[3].trim();
-                String estado = campos[4].trim();
-                String codigoPostal = campos[5].trim();
-                String correoElectronico = campos[6].trim();
-                String telefono = campos[7].trim();
 
-                AddressEntry entry = new AddressEntry(nombre, apellido, calle, ciudad, estado,
-                        codigoPostal, correoElectronico, telefono);
-                entries.add(entry);
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                // Formato esperado: nombre,apellido,calle,ciudad,estado,codigoPostal,correoElectronico,telefono
+                String[] campos = linea.split(",");
+                if (campos.length == 8) {
+                    String nombre = campos[0].trim();
+                    String apellido = campos[1].trim();
+                    String calle = campos[2].trim();
+                    String ciudad = campos[3].trim();
+                    String estado = campos[4].trim();
+                    String codigoPostal = campos[5].trim();
+                    String correoElectronico = campos[6].trim();
+                    String telefono = campos[7].trim();
+
+                    AddressEntry entry = new AddressEntry(nombre, apellido, calle, ciudad, estado,
+                            codigoPostal, correoElectronico, telefono);
+                    agregarEntry(entry);
+                } else {
+                    System.out.println("Formato incorrecto en la línea: " + linea);
+                }
             }
         }
     }
@@ -106,14 +98,12 @@ public class AddressBook {
      * Devuelve la lista de entradas de direcciones.
      * @return Lista de entradas de direcciones.
      */
-
     public List<AddressEntry> getEntries() {
         return entries;
     }
 
     /**
-     * Muestra todas las entradas de direcciones.
-     * Muestra todas las entradas de direcciones en el orden en que se agregaron.
+     * Muestra todas las entradas de direcciones ordenadas por apellido.
      */
     public void mostrarContactosOrdenados() {
         List<AddressEntry> copiaEntries = new ArrayList<>(entries);

@@ -73,12 +73,12 @@ class AddressBookTest {
     @Test
     void testMostrarContactosOrdenados() {
         // Primera prueba: Mostrar contactos ordenados con una entrada
-        AddressEntry entry1 = new AddressEntry("John", "Doe", "123 Main St", "City", "State", "12345", "john@example.com", "1234567890");
+        AddressEntry entry1 = new AddressEntry("Diego", "Dominguez", "Alamo", "Coatzacoalcos", "Veracruz", "96590", "diegodgz.182@gmail.com", "9211688116");
         addressBook.agregarEntry(entry1);
         assertDoesNotThrow(() -> addressBook.mostrarContactosOrdenados());
 
         // Segunda prueba: Mostrar contactos ordenados con múltiples entradas
-        AddressEntry entry2 = new AddressEntry("Jane", "Smith", "456 Elm St", "Town", "State", "54321", "jane@example.com", "9876543210");
+        AddressEntry entry2 = new AddressEntry("Rafa", "Sandoval", "Quevedo", "Coatzacoalcos", "Veracruz", "96520", "rafa@gmail.com", "9211688182");
         addressBook.agregarEntry(entry2);
         assertDoesNotThrow(() -> addressBook.mostrarContactosOrdenados());
     }

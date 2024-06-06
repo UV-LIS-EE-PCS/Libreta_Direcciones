@@ -1,12 +1,8 @@
 package addressData;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-import addressData.AddressEntry;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AddressEntryTest {
 
